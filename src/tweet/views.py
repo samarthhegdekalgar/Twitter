@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from .serializer import TweetSerializer
 from .models import Tweet
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView
 
 
 class TweetListAPIView(ListAPIView):
@@ -20,5 +20,17 @@ class TweetCreateAPIView(CreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class TweetUpdateAPIView(UpdateAPIView):
+    queryset = Tweet.objects.all()
+    serializer_class = TweetSerializer
+
+
+
+
+
+
+
 
 
