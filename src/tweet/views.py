@@ -1,14 +1,26 @@
 from django.shortcuts import render
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from .serializer import TweetSerializer
 from .models import Tweet
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 
 
+# class TweeListAPIViewPagination(PageNumberPagination):
+#     page_size = 5
+
+
 class TweetListAPIView(ListAPIView):
     queryset = Tweet.objects.all().filter(is_deleted=False)
     serializer_class = TweetSerializer
+    # pagination_class = TweeListAPIViewPagination
+
+    # def get(self, request, *args, **kwargs):
+    #     queryset = Tweet.objects.all().filter(is_deleted=False)
+    #     serializer = TweetSerializer(queryset, many=True)
+    #     page = self.paginate_queryset(serializer.data)
+    #     return self.get_paginated_response(page)
 
 
 class TweetCreateAPIView(CreateAPIView):
