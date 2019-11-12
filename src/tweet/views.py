@@ -3,11 +3,11 @@ from rest_framework import status
 from rest_framework.response import Response
 from .serializer import TweetSerializer
 from .models import Tweet
-from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 
 
 class TweetListAPIView(ListAPIView):
-    queryset = Tweet.objects.all()
+    queryset = Tweet.objects.all().filter(is_deleted=False)
     serializer_class = TweetSerializer
 
 
@@ -25,7 +25,17 @@ class TweetCreateAPIView(CreateAPIView):
 class TweetUpdateAPIView(UpdateAPIView):
     queryset = Tweet.objects.all()
     serializer_class = TweetSerializer
+    lookup_field = 'pk'
 
+
+class TweetDestroyAPIView(DestroyAPIView):
+    queryset = Tweet.objects.all()
+    serializer_class = TweetSerializer
+    lookup_field = 'pk'
+
+    def perform_destroy(self, instance):
+        instance.is_deleted = True
+        instance.save()
 
 
 

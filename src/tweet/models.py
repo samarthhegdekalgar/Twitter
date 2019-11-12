@@ -6,6 +6,7 @@ class Tweet(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(max_length=140)
     date_time = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.username.name
